@@ -79,3 +79,5 @@ if (process.argv[1] === import.meta.filename) {
 }
 
 export { calculateExercises, type Result };
+
+// Exercise 9.3 CLI support.
