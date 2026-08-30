@@ -38,3 +38,4 @@ if (process.argv[1] === import.meta.filename) {
 }
 
 export { calculateBmi };
+export default calculateBmi;
