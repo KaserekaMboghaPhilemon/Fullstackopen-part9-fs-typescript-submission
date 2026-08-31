@@ -2,26 +2,34 @@
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install dependencies
+
+      - name: Install healthapp dependencies
         run: |
           cd healthapp
           npm ci
-          cd ../healthapp-tests
+
+      - name: Install Playwright test dependencies
+        run: |
+          cd healthapp-tests
           npm ci
+
+      - name: Install Playwright browsers with dependencies
+        run: |
+          cd healthapp-tests
           npx playwright install --with-deps
-      - name: Run tests
+
+      - name: Run E2E tests
         run: |
-          cd healthapp
-          npm start &
-          cd ../healthapp-tests
+          cd healthapp-tests
           npm test
