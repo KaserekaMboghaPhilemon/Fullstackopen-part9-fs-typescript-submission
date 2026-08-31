@@ -1,4 +1,4 @@
-interface Result {
+export interface Result {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -7,12 +7,20 @@ interface Result {
   target: number;
   average: number;
 }
+ 
+interface ExerciseValues {
+  target: number;
+  dailyHours: number[];
+}
 
-const calculateExercises = (dailyHours: number[], target: number): Result => {
+export const calculateExercises = (
+  dailyHours: number[],
+  target: number,
+): Result => {
   const periodLength = dailyHours.length;
   const trainingDays = dailyHours.filter((hours) => hours > 0).length;
-  const total = dailyHours.reduce((sum, hours) => sum + hours, 0);
-  const average = total / periodLength;
+  const totalHours = dailyHours.reduce((sum, hours) => sum + hours, 0);
+  const average = periodLength > 0 ? totalHours / periodLength : 0;
   const success = average >= target;
 
   let rating: number;
@@ -20,13 +28,13 @@ const calculateExercises = (dailyHours: number[], target: number): Result => {
 
   if (average >= target) {
     rating = 3;
-    ratingDescription = "excellent";
+    ratingDescription = "great job, target achieved";
   } else if (average >= target * 0.75) {
     rating = 2;
     ratingDescription = "not too bad but could be better";
   } else {
     rating = 1;
-    ratingDescription = "bad";
+    ratingDescription = "you need to put in more effort";
   }
 
   return {
@@ -40,44 +48,45 @@ const calculateExercises = (dailyHours: number[], target: number): Result => {
   };
 };
 
-const parseExerciseArguments = (
-  args: string[],
-): { target: number; dailyHours: number[] } => {
-  if (args.length === 0) {
-    throw new Error("At least target value and one exercise value required");
-  }
-
-  const values = args.map(Number);
-  if (values.some((val) => isNaN(val))) {
-    throw new Error("Provided values were not numbers!");
-  }
-
-  const target = values[0];
-  const dailyHours = values.slice(1);
-
-  if (dailyHours.length === 0) {
+const parseExerciseArguments = (args: string[]): ExerciseValues => {
+  if (args.length < 2) {
     throw new Error("At least one daily exercise value required");
   }
 
-  return { target, dailyHours };
+  const target = Number(args[0]);
+  const dailyHoursRaw = args.slice(1);
+
+  if (isNaN(target)) {
+    throw new Error("Target value must be a valid number.");
+  }
+
+  const dailyHours: number[] = [];
+
+  for (const hour of dailyHoursRaw) {
+    if (isNaN(Number(hour))) {
+      throw new Error("All daily exercise values must be valid numbers.");
+    }
+    dailyHours.push(Number(hour));
+  }
+
+  return {
+    target,
+    dailyHours,
+  };
 };
 
+// Guard: Only execute CLI logic if called directly, not on import
 if (process.argv[1] === import.meta.filename) {
   try {
     const { target, dailyHours } = parseExerciseArguments(
       process.argv.slice(2),
     );
-    const result = calculateExercises(dailyHours, target);
-    console.log(result);
+    console.log(calculateExercises(dailyHours, target));
   } catch (error: unknown) {
     let errorMessage = "Something bad happened.";
     if (error instanceof Error) {
-      errorMessage += ` Error: ${error.message}`;
+      errorMessage += " Error: " + error.message;
     }
     console.log(errorMessage);
   }
 }
-
-export { calculateExercises, type Result };
-
-// Exercise 9.3 CLI support.
