@@ -1,4 +1,6 @@
-const diagnoses = [
+import type { Diagnosis } from "../src/types.ts";
+
+const diagnoses: Diagnosis[] = [
   {
     code: "M24.2",
     name: "Elastic band syndrome",
@@ -47,6 +49,6 @@ const diagnoses = [
     name: "Atopic dermatitis",
     latin: "Dermatitis atopica",
   },
-] as const;
+];
 
 export default diagnoses;
