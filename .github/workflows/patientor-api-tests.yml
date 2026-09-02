@@ -2,26 +2,33 @@ name: Patientor API Tests
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main]
   pull_request:
-    branches: [ main, master ]
+    branches: [main]
 
 jobs:
-  api_tests:
+  test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: patientor/backend
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - name: Install dependencies & run backend
-        run: |
-          cd patientor/backend
-          npm ci
-          npm run build || true
-          npm start &
-      - name: Run API tests
-        run: |
-          cd patientor-api-tests
-          npm ci
-          npm test
+          node-version: 22
+          cache: npm
+          cache-dependency-path: patientor/backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Run tests
+        run: npm test -- --test-reporter=spec

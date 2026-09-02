@@ -4,10 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "tsc",
     "tsc": "tsc",
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
     "start": "node --experimental-transform-types src/index.ts",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -20,9 +23,12 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.0",
     "@types/node": "^24.0.0",
+    "@types/supertest": "^6.0.0",
     "concurrently": "^9.0.0",
     "eslint": "^9.0.0",
+    "supertest": "^7.0.0",
     "typescript": "^5.7.0",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.2.4"
   }
 }

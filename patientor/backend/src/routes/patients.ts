@@ -11,16 +11,25 @@ patientsRouter.get("/", (_req, res) => {
   res.json(patients);
 });
 
+patientsRouter.get("/:id", (req, res) => {
+  const patient = patientService.getPatientById(req.params.id);
+
+  if (!patient) {
+    res.status(404).send("Patient not found");
+    return;
+  }
+
+  res.json(patient);
+});
+
 patientsRouter.post("/", (req, res) => {
   try {
     const newPatient = toNewPatient(req.body);
     const addedPatient = patientService.addPatient(newPatient);
-    res.json(addedPatient); // Express sends 200 OK by default
+    res.status(201).json(addedPatient);
   } catch (error: unknown) {
-    let errorMessage = "Something went wrong.";
-    if (error instanceof Error) {
-      errorMessage += " Error: " + error.message;
-    }
+    const errorMessage =
+      error instanceof Error ? error.message : "Something went wrong.";
     res.status(400).send(errorMessage);
   }
 });
