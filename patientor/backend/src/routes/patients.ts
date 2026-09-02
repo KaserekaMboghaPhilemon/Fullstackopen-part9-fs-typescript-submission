@@ -15,14 +15,12 @@ patientsRouter.post("/", (req, res) => {
   try {
     const newPatient = toNewPatient(req.body);
     const addedPatient = patientService.addPatient(newPatient);
-    res.status(201).json(addedPatient);
+    res.json(addedPatient); // Express sends 200 OK by default
   } catch (error: unknown) {
     let errorMessage = "Something went wrong.";
-
     if (error instanceof Error) {
-      errorMessage = error.message;
+      errorMessage += " Error: " + error.message;
     }
-
     res.status(400).send(errorMessage);
   }
 });
