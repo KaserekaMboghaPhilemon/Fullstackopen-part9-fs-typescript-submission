@@ -1,25 +1,35 @@
+import type { ReactElement } from "react";
 import Header from "./components/Header.tsx";
 import Content from "./components/Content.tsx";
 import Total from "./components/Total.tsx";
+import type { CoursePart } from "./types.ts";
 
 const courseName = "Half Stack application development";
 
-const courseParts = [
+const courseParts: CoursePart[] = [
   {
-    name: "Fundamentals of React",
+    name: "Fundamentals",
     exerciseCount: 10,
+    description: "This is an awesome course part",
+    kind: "basic",
   },
   {
     name: "Using props to pass data",
     exerciseCount: 7,
+    groupProjectCount: 3,
+    kind: "group",
   },
   {
     name: "Deeper type usage",
     exerciseCount: 14,
+    description: "Confusing description",
+    backgroundMaterial:
+      "https://type-level-typescript.com/template-literal-types",
+    kind: "background",
   },
 ];
 
-const App = () => {
+const App = (): ReactElement => {
   const totalExercises = courseParts.reduce(
     (sum, part) => sum + part.exerciseCount,
     0,

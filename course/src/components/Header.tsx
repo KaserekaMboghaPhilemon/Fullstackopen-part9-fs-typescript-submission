@@ -1,7 +1,9 @@
-interface HeaderProps {
-  name: string;
-}
+import type { ReactElement } from "react";
 
-const Header = (props: HeaderProps) => <h1>{props.name}</h1>;
+type HeaderProps = {
+  name: string;
+};
+
+const Header = ({ name }: HeaderProps): ReactElement => <h1>{name}</h1>;
 
 export default Header;

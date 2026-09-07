@@ -1,9 +1,11 @@
-interface TotalProps {
-  totalExercises: number;
-}
+import type { ReactElement } from "react";
 
-const Total = (props: TotalProps) => (
-  <p>Number of exercises {props.totalExercises}</p>
+type TotalProps = {
+  totalExercises: number;
+};
+
+const Total = ({ totalExercises }: TotalProps): ReactElement => (
+  <p>Number of exercises {totalExercises}</p>
 );
 
 export default Total;

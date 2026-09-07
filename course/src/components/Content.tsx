@@ -1,18 +1,15 @@
-interface CoursePart {
-  name: string;
-  exerciseCount: number;
-}
+import type { ReactElement } from "react";
+import type { CoursePart } from "../types.ts";
+import Part from "./Part.tsx";
 
-interface ContentProps {
+type ContentProps = {
   courseParts: CoursePart[];
-}
+};
 
-const Content = (props: ContentProps) => (
+const Content = ({ courseParts }: ContentProps): ReactElement => (
   <div>
-    {props.courseParts.map((part) => (
-      <p key={part.name}>
-        {part.name} {part.exerciseCount}
-      </p>
+    {courseParts.map((part) => (
+      <Part key={part.name} part={part} />
     ))}
   </div>
 );
