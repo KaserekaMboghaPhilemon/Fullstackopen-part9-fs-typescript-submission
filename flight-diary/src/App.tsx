@@ -26,14 +26,19 @@ const App = (): ReactElement => {
         weather,
         comment,
       });
-      setDiaries(diaries.concat(newDiary));
+      setDiaries((currentDiaries) => currentDiaries.concat(newDiary));
       setDate("");
       setVisibility(Visibility.Great);
       setWeather(Weather.Sunny);
       setComment("");
     } catch (requestError) {
       if (axios.isAxiosError(requestError)) {
-        setError(requestError.response?.data?.error ?? requestError.message);
+        const responseData = requestError.response?.data;
+        setError(
+          typeof responseData === "string"
+            ? responseData
+            : (responseData?.error ?? requestError.message),
+        );
       } else {
         setError("An unexpected error occurred");
       }
@@ -44,6 +49,7 @@ const App = (): ReactElement => {
     <div>
       <h1>Flight Diaries</h1>
       <h2>Add new entry</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={submitDiary}>
         <div>
           <label htmlFor="date">Date</label>
@@ -95,7 +101,6 @@ const App = (): ReactElement => {
         </div>
         <button type="submit">Add</button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
       {diaries.map((diary) => (
         <article key={diary.id}>
           <h2>{diary.date}</h2>
