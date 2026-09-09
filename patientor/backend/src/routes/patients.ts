@@ -12,7 +12,7 @@ patientsRouter.get("/", (_req, res) => {
 });
 
 patientsRouter.get("/:id", (req, res) => {
-  const patient = patientService.getPatientById(req.params.id);
+  const patient = patientService.getPatient(req.params.id);
 
   if (!patient) {
     res.status(404).send("Patient not found");

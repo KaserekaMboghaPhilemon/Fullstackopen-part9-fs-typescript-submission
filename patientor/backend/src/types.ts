@@ -10,13 +10,8 @@ export enum Gender {
   Other = "other",
 }
 
-export interface Entry {
-  id: string;
-  date: string;
-  specialist: string;
-  diagnosisCodes?: Array<Diagnosis["code"]>;
-  description: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Entry {}
 
 export interface Patient {
   id: string;
@@ -29,4 +24,4 @@ export interface Patient {
 }
 
 export type NewPatient = Omit<Patient, "id" | "entries">;
-export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;
+export type NonSensitivePatient = Omit<Patient, "entries" | "ssn">;
