@@ -2,24 +2,26 @@ name: Patientor E2E Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
 jobs:
-  test:
+  e2e-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: 20
 
       - name: Install patientor backend dependencies
         working-directory: ./patientor/backend
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Start patientor backend
         working-directory: ./patientor/backend
@@ -27,7 +29,7 @@ jobs:
 
       - name: Install patientor frontend dependencies
         working-directory: ./patientor/frontend
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Build patientor frontend
         working-directory: ./patientor/frontend
@@ -39,11 +41,11 @@ jobs:
 
       - name: Install e2e test dependencies
         working-directory: ./patientor-tests
-        run: npm install
+        run: npm ci
 
       - name: Install Playwright browsers
         working-directory: ./patientor-tests
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
 
       - name: Wait for servers to start
         run: npx wait-on http://localhost:3001/api/ping http://localhost:5173 --timeout 60000
