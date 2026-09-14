@@ -8,7 +8,19 @@ const patients: Patient[] = [
     ssn: "090786-122X",
     gender: Gender.Male,
     occupation: "New york city cop",
-    entries: [],
+    entries: [
+      {
+        id: "d2773d00-f723-11e9-8f0b-362b9e155667",
+        type: "Hospital",
+        date: "2020-10-01",
+        specialist: "Dr. House",
+        description: "Thumb has healed",
+        discharge: {
+          date: "2020-10-15",
+          criteria: "Thumb has healed",
+        },
+      },
+    ],
   },
   {
     id: "d2773598-f723-11e9-8f0b-362b9e155667",
