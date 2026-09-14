@@ -17,7 +17,7 @@ const patients: Patient[] = [
         description: "Thumb has healed",
         discharge: {
           date: "2020-10-15",
-          criteria: "Thumb has healed",
+          criteria: "Full thumb mobility restored",
         },
       },
     ],
