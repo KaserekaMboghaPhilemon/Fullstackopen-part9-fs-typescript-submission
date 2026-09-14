@@ -1,7 +1,7 @@
 import { Router } from "express";
 import patientService from "../services/patientService.ts";
 import type { NonSensitivePatient } from "../types.ts";
-import { toNewPatient } from "../utils.ts";
+import { toNewEntry, toNewPatient } from "../utils.ts";
 
 const patientsRouter = Router();
 
@@ -20,6 +20,24 @@ patientsRouter.get("/:id", (req, res) => {
   }
 
   res.json(patient);
+});
+
+patientsRouter.post("/:id/entries", (req, res) => {
+  try {
+    const newEntry = toNewEntry(req.body);
+    const addedEntry = patientService.addEntry(req.params.id, newEntry);
+
+    if (!addedEntry) {
+      res.status(404).send("Patient not found");
+      return;
+    }
+
+    res.status(200).json(addedEntry);
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Something went wrong.";
+    res.status(400).send(errorMessage);
+  }
 });
 
 patientsRouter.post("/", (req, res) => {
