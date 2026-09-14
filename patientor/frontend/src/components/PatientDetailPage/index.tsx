@@ -5,17 +5,24 @@ import MaleIcon from "@mui/icons-material/Male";
 import { Transgender as TransgenderIcon } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
-import { Gender, Patient } from "../../types";
+import diagnosisService from "../../services/diagnoses";
+import EntryDetails from "./EntryDetails";
+import { Diagnosis, Gender, Patient } from "../../types";
 
 const PatientDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
 
   useEffect(() => {
     if (id) {
       patientService.getOne(id).then((patient) => setPatient(patient));
     }
   }, [id]);
+
+  useEffect(() => {
+    diagnosisService.getAll().then((diagnoses) => setDiagnoses(diagnoses));
+  }, []);
 
   if (!patient) {
     return <Typography>Loading patient details...</Typography>;
@@ -41,11 +48,7 @@ const PatientDetailPage = () => {
         <Typography>No entries</Typography>
       ) : (
         patient.entries.map((entry) => (
-          <div key={entry.id}>
-            <Typography>{entry.date}</Typography>
-            <Typography>{entry.description}</Typography>
-            <Typography>Specialist: {entry.specialist}</Typography>
-          </div>
+          <EntryDetails key={entry.id} entry={entry} diagnoses={diagnoses} />
         ))
       )}
     </div>
