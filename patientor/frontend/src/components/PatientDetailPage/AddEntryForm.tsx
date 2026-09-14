@@ -211,7 +211,7 @@ const AddEntryForm = ({ diagnoses, onCancel, onSubmit }: Props) => {
           Cancel
         </Button>
         <Button type="submit" variant="contained">
-          Add entry
+          Add
         </Button>
       </Grid>
     </form>

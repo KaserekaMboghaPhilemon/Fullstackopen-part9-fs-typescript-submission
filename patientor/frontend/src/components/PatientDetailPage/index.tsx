@@ -96,7 +96,7 @@ const PatientDetailPage = () => {
           sx={{ marginTop: 2 }}
           onClick={() => setAddEntryOpen(true)}
         >
-          ADD NEW ENTRY
+          Add New Entry
         </Button>
       )}
       {patient.entries.length === 0 ? (
