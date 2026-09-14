@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
-import TransgenderIcon from "@mui/icons-material/Transgender";
+import { Transgender as TransgenderIcon } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
 import { Gender, Patient } from "../../types";
@@ -34,7 +34,20 @@ const PatientDetailPage = () => {
         {patient.name} <GenderIcon />
       </Typography>
       <Typography>SSN: {patient.ssn}</Typography>
+      <Typography>Date of birth: {patient.dateOfBirth}</Typography>
       <Typography>Occupation: {patient.occupation}</Typography>
+      <Typography variant="h5">Entries</Typography>
+      {patient.entries.length === 0 ? (
+        <Typography>No entries</Typography>
+      ) : (
+        patient.entries.map((entry) => (
+          <div key={entry.id}>
+            <Typography>{entry.date}</Typography>
+            <Typography>{entry.description}</Typography>
+            <Typography>Specialist: {entry.specialist}</Typography>
+          </div>
+        ))
+      )}
     </div>
   );
 };
