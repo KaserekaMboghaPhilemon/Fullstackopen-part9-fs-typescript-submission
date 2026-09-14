@@ -1,6 +1,7 @@
 import { SyntheticEvent, useState } from "react";
 import {
   Button,
+  Chip,
   FormControl,
   Grid,
   InputLabel,
@@ -118,6 +119,13 @@ const AddEntryForm = ({ diagnoses, onCancel, onSubmit }: Props) => {
           label="Diagnosis codes"
           value={diagnosisCodes}
           onChange={changeDiagnosisCodes}
+          renderValue={(selected) => (
+            <Grid container gap={0.5}>
+              {selected.map((code) => (
+                <Chip key={code} label={code} size="small" />
+              ))}
+            </Grid>
+          )}
         >
           {diagnoses.map((diagnosis) => (
             <MenuItem key={diagnosis.code} value={diagnosis.code}>
@@ -141,9 +149,14 @@ const AddEntryForm = ({ diagnoses, onCancel, onSubmit }: Props) => {
               )
             }
           >
-            {[0, 1, 2, 3].map((rating) => (
+            {[
+              [HealthCheckRating.Healthy, "Healthy"],
+              [HealthCheckRating.LowRisk, "Low Risk"],
+              [HealthCheckRating.HighRisk, "High Risk"],
+              [HealthCheckRating.CriticalRisk, "Critical Risk"],
+            ].map(([rating, label]) => (
               <MenuItem key={rating} value={rating}>
-                {rating}
+                {rating} — {label}
               </MenuItem>
             ))}
           </Select>
